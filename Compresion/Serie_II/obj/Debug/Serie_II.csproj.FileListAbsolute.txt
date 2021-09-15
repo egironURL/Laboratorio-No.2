@@ -1,0 +1,10 @@
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Serie_II\obj\Debug\Serie_II.csproj.CoreCompileInputs.cache
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Serie_II\bin\Debug\Serie_II.exe.config
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Serie_II\bin\Debug\Serie_II.exe
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Serie_II\bin\Debug\Serie_II.pdb
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Serie_II\bin\Debug\Compresion.dll
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Serie_II\bin\Debug\Compresion.pdb
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Serie_II\obj\Debug\Serie_II.csprojAssemblyReference.cache
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Serie_II\obj\Debug\Serie_II.csproj.CopyComplete
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Serie_II\obj\Debug\Serie_II.exe
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Serie_II\obj\Debug\Serie_II.pdb

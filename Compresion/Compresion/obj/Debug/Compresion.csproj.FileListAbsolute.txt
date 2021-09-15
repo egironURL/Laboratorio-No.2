@@ -1,0 +1,5 @@
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Compresion\bin\Debug\Compresion.dll
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Compresion\bin\Debug\Compresion.pdb
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Compresion\obj\Debug\Compresion.csproj.CoreCompileInputs.cache
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Compresion\obj\Debug\Compresion.dll
+C:\Users\IT\Documents\EG\URL\Segundo Ciclo - 3er Año\Estructura de Datos II (Práctico)\Laboratorios\Laboratorio No.2\Compresion\Compresion\obj\Debug\Compresion.pdb
