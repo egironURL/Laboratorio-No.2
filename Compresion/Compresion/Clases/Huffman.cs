@@ -20,18 +20,41 @@ namespace Compresion.Clases
 
         public int ReductionPer { get; set; }
 
-        public Huffman(string _FileName, string _PathFileHUFF)
+        public FileInfo fileData { get; set; }
+
+        public FileInfo fileDecompress { get; set; }
+
+        public Huffman(string _FileName, string _pathFileHuff)
         {
             this.FileName = _FileName;
-            this.PathFileHUFF = _PathFileHUFF;
+            this.PathFileHUFF = _pathFileHuff;
         }
 
-        public void Comprimir()
+        public Huffman(FileInfo _FileName, FileInfo _FileDecompress)
+        {
+            this.fileData = _FileName;
+            this.fileDecompress = _FileDecompress;
+
+            if (_FileName != null && _FileDecompress == null)
+            {
+                this.FileName = _FileName.FullName;
+                this.PathFileHUFF = _FileName.FullName + ".huff";
+            } 
+            if(_FileName == null && _FileDecompress != null)
+            {
+                this.FileName = _FileDecompress.FullName + ".txt";
+                this.PathFileHUFF = _FileDecompress.FullName;
+            }
+        }
+
+
+
+        public List<byte> Comprimir()
         {
             List<int> ListaASCII = new List<int>();
             List<NodoHuffman> ListaProbabilidad = new List<NodoHuffman>();
 
-            ListaASCII = FileTXT_To_ListASCII(this.FileName);
+            ListaASCII = FileTXT_To_ListASCII();
 
             //Crear Lista Probabilidad
             int NoASCII = -1, Cont = 0;
@@ -59,17 +82,26 @@ namespace Compresion.Clases
             List<byte> ListaCompresion = ConvertToByte(strTextPre);
             int frecuenciaMax = FrecuenciaMax(ListaProbabilidad);
 
-            CrearArchivoCompresion(frecuenciaMax, ListaProbOrdenada, ListaCompresion);
+            List<byte> FileCompress = ObtenerArchivoComprimido(frecuenciaMax, ListaProbOrdenada, ListaCompresion);
+
+            ObtenerCompressRatio(FileCompress.Count, ListaASCII.Count);
+            ObtenerCompressFactor(ListaASCII.Count, FileCompress.Count);
+
+            Console.WriteLine("\n\nCompressRatio: " + this.CompressRatio);
+            Console.WriteLine("CompressFactor: " + this.CompressFactor);
+            Console.WriteLine("ReductionPer: " + this.ReductionPer + "%");
+
+            return FileCompress;
         }
 
-        private List<int> FileTXT_To_ListASCII(string _Path)
+        private List<int> FileTXT_To_ListASCII()
         {
             List<int> ListaASCII = new List<int>();
 
-            string fileName = _Path;
             int letter = 0;
-            FileStream stream = new FileStream(fileName, FileMode.Open,
-            FileAccess.Read);
+            //FileStream stream = new FileStream(fileName, FileMode.Open,
+            //FileAccess.Read);
+            FileStream stream = fileData.Open(FileMode.Open, FileAccess.Read);
             BinaryReader reader = new BinaryReader(stream);
             while (letter != -1)
             {
@@ -274,23 +306,21 @@ namespace Compresion.Clases
 
             return frecuenciaMAX;
         }
-        
-        private void CrearArchivoCompresion(int _frecuencyMax, List<NodoHuffman> _ListaProbabilidad, List<byte> _ListaCompresion)
+
+        private List<byte> ObtenerArchivoComprimido(int _frecuencyMax, List<NodoHuffman> _ListaProbabilidad, List<byte> _ListaCompresion)
         {
-            string fileName = @"C:\Users\IT\Documents\EG\Cadena.huff";
-            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Write);
-            BinaryWriter writer = new BinaryWriter(stream);
+            List<byte> FileCompress = new List<byte>();
 
             //Escritura de Prefijos
-            writer.Write(Convert.ToByte(_frecuencyMax));
-            writer.Write(Convert.ToByte(_ListaProbabilidad.Count));
+            FileCompress.Add(Convert.ToByte(_frecuencyMax));
+            FileCompress.Add(Convert.ToByte(_ListaProbabilidad.Count));
 
             int temp = 0;
             Stack<int> pilaFrecuencia = new Stack<int>();
             bool ok = false;
             for (int x = 0; x < _ListaProbabilidad.Count; x++)
             {
-                writer.Write(Convert.ToByte(_ListaProbabilidad.ElementAt(x).NoASCII));
+                FileCompress.Add(Convert.ToByte(_ListaProbabilidad.ElementAt(x).NoASCII));
                 for (int y = 0; y < _frecuencyMax; y++)
                 {
                     if (ok != true)
@@ -317,27 +347,38 @@ namespace Compresion.Clases
                 temp = 0;
                 while (pilaFrecuencia.Count > 0)
                 {
-                    writer.Write(Convert.ToByte(pilaFrecuencia.Pop()));
+                    FileCompress.Add(Convert.ToByte(pilaFrecuencia.Pop()));
                 }
             }
 
             //Escritura de Cadena a comprimir
             for (int z = 0; z < _ListaCompresion.Count; z++)
             {
-                writer.Write(Convert.ToByte(_ListaCompresion.ElementAt(z)));
+                FileCompress.Add(Convert.ToByte(_ListaCompresion.ElementAt(z)));
+            }
+
+            return FileCompress;
+        }
+
+        public void CrearArchivoCompresion()
+        {
+            if (File.Exists(PathFileHUFF))
+            {
+                File.Delete(PathFileHUFF);
+            }
+
+            //File.Create(PathFileHUFF);
+            List<byte> _FileCompress = Comprimir();
+            FileStream stream = new FileStream(PathFileHUFF, FileMode.Create, FileAccess.Write);
+            BinaryWriter writer = new BinaryWriter(stream);
+
+            for (int x = 0; x < _FileCompress.Count; x++)
+            {
+                writer.Write(_FileCompress.ElementAt(x));
             }
 
             writer.Close();
             stream.Close();
-
-            try
-            {
-
-            }
-            catch
-            {
-                Console.WriteLine("\n\nERROR: No se pudo escribir el archivo comprimido");
-            }
         }
 
         private void ObtenerCompressRatio(int _FileHUFF, int _File)
@@ -348,7 +389,7 @@ namespace Compresion.Clases
             this.ReductionPer = 100 - Convert.ToInt32(this.CompressRatio * 100);
         }
 
-        private void ObtenerCompressFactor(int _FileHUFF, int _File)
+        private void ObtenerCompressFactor(int _File, int _FileHUFF)
         {
             this.CompressFactor = Convert.ToDouble(Decimal.Divide(_File, _FileHUFF));
             this.CompressFactor = Math.Round(this.CompressFactor, 2);
@@ -356,11 +397,11 @@ namespace Compresion.Clases
 
 
 
-        public void Descomprimir()
+        public List<byte> Descomprimir()
         {
             List<int> ListaASCII = new List<int>();
 
-            ListaASCII = FileHUFF_To_ListASCII(this.PathFileHUFF);
+            ListaASCII = FileHUFF_To_ListASCII();
             List<NodoHuffman> ListaProbabilidad = ObtenerListaProb(ListaASCII);
             Dictionary<int, string> Prefijos = ConstruirArbol(ListaProbabilidad);
 
@@ -391,17 +432,18 @@ namespace Compresion.Clases
                 }
             }
 
-            CrearArchivoDescompresion(ListaDescompresion);
+            return ListaDescompresion;
         }
 
-        private List<int> FileHUFF_To_ListASCII(string _Path)
+        private List<int> FileHUFF_To_ListASCII()
         {
             List<int> ListaASCII = new List<int>();
 
-            string fileName = _Path;
+            string fileName = PathFileHUFF;
             int letter = 0;
-            FileStream stream = new FileStream(fileName, FileMode.Open,
-            FileAccess.Read);
+            //FileStream stream = new FileStream(fileName, FileMode.Open,
+            //FileAccess.Read);
+            FileStream stream = fileDecompress.Open(FileMode.Open, FileAccess.Read);
             BinaryReader reader = new BinaryReader(stream);
             while (letter != -1)
             {
@@ -486,16 +528,21 @@ namespace Compresion.Clases
             return sumFrecuencia;
         }
         
-        private void CrearArchivoDescompresion(List<byte> _ListaDescompresion)
+        public void CrearArchivoDescompresion()
         {
+            List<byte> ListaDescompresion = Descomprimir();
             try
             {
-                string fileName = @"C:\Users\IT\Documents\EG\Cadena_DES.txt";
-                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Write);
-                BinaryWriter writer = new BinaryWriter(stream);
-                for (int x = 0; x < _ListaDescompresion.Count; x++)
+                if (File.Exists(PathFileHUFF))
                 {
-                    writer.Write(_ListaDescompresion.ElementAt(x));
+                    File.Delete(PathFileHUFF);
+                }
+
+                FileStream stream = new FileStream(FileName, FileMode.Create, FileAccess.Write);
+                BinaryWriter writer = new BinaryWriter(stream);
+                for (int x = 0; x < ListaDescompresion.Count; x++)
+                {
+                    writer.Write(ListaDescompresion.ElementAt(x));
                 }
                 writer.Close();
                 stream.Close();

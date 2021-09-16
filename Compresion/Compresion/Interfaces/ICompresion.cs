@@ -9,8 +9,8 @@ namespace Compresion.Interfaces
 {
     interface ICompresion
     {
-        void Comprimir();
+        List<byte> Comprimir();
 
-        void Descomprimir();
+        List<byte> Descomprimir();
     }
 }
