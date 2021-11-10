@@ -8,3 +8,7 @@ C:\Users\IT\Desktop\Laboratorios\Laboratorio No.2\Compresion\Compresion\bin\Debu
 C:\Users\IT\Desktop\Laboratorios\Laboratorio No.2\Compresion\Compresion\obj\Debug\Compresion.csproj.CoreCompileInputs.cache
 C:\Users\IT\Desktop\Laboratorios\Laboratorio No.2\Compresion\Compresion\obj\Debug\Compresion.dll
 C:\Users\IT\Desktop\Laboratorios\Laboratorio No.2\Compresion\Compresion\obj\Debug\Compresion.pdb
+C:\Users\IT\Desktop\Laboratorios\Laboratorio No.2\Compresion\Compresion\bin\Debug\Newtonsoft.Json.dll
+C:\Users\IT\Desktop\Laboratorios\Laboratorio No.2\Compresion\Compresion\bin\Debug\Newtonsoft.Json.xml
+C:\Users\IT\Desktop\Laboratorios\Laboratorio No.2\Compresion\Compresion\obj\Debug\Compresion.csproj.CopyComplete
+C:\Users\IT\Desktop\Laboratorios\Laboratorio No.2\Compresion\Compresion\obj\Debug\Compresion.csprojAssemblyReference.cache

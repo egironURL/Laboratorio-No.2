@@ -1,0 +1,23 @@
+[
+  {
+    "FileName": "CadenaCorta.txt",
+    "PathFileHUFF": "Compresion1.huff",
+    "CompressRatio": 0.61,
+    "CompressFactor": 1.64,
+    "ReductionPer": 39
+  },
+  {
+    "FileName": "CadenaMedia.txt",
+    "PathFileHUFF": "Compresion2.huff",
+    "CompressRatio": 0.63,
+    "CompressFactor": 1.6,
+    "ReductionPer": 37
+  },
+  {
+    "FileName": "Cadena.txt",
+    "PathFileHUFF": "Compresion3.huff",
+    "CompressRatio": 0.72,
+    "CompressFactor": 1.4,
+    "ReductionPer": 28
+  }
+]

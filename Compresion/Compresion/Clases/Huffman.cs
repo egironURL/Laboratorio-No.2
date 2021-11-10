@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Compresion.Interfaces;
+using Newtonsoft.Json;
 
 namespace Compresion.Clases
 {
@@ -24,10 +25,10 @@ namespace Compresion.Clases
 
         public FileInfo fileDecompress { get; set; }
 
-        public Huffman(string _FileName, string _pathFileHuff)
+        public Huffman()
         {
-            this.FileName = _FileName;
-            this.PathFileHUFF = _pathFileHuff;
+            this.FileName = string.Empty;
+            this.PathFileHUFF = string.Empty;
         }
 
         public Huffman(FileInfo _FileName, FileInfo _FileDecompress)
@@ -38,16 +39,21 @@ namespace Compresion.Clases
             if (_FileName != null && _FileDecompress == null)
             {
                 this.FileName = _FileName.FullName;
-                this.PathFileHUFF = _FileName.FullName + ".huff";
+                this.PathFileHUFF = this.FileName.Replace(_FileName.Extension, ".huff");
             } 
-            if(_FileName == null && _FileDecompress != null)
+            if (_FileName == null && _FileDecompress != null)
             {
-                this.FileName = _FileDecompress.FullName + ".txt";
+                this.PathFileHUFF = _FileDecompress.FullName;
+                this.FileName = this.PathFileHUFF.Replace(_FileDecompress.Extension, ".txt");
+            }
+            if (_FileName == null && _FileDecompress == null)
+            {
+                this.FileName = _FileName.FullName;
                 this.PathFileHUFF = _FileDecompress.FullName;
             }
         }
 
-
+        // ///////////////////////////////////////COMPRIMIR//////////////////////////////////////
 
         public List<byte> Comprimir()
         {
@@ -99,8 +105,6 @@ namespace Compresion.Clases
             List<int> ListaASCII = new List<int>();
 
             int letter = 0;
-            //FileStream stream = new FileStream(fileName, FileMode.Open,
-            //FileAccess.Read);
             FileStream stream = fileData.Open(FileMode.Open, FileAccess.Read);
             BinaryReader reader = new BinaryReader(stream);
             while (letter != -1)
@@ -273,18 +277,15 @@ namespace Compresion.Clases
                 LongBit = newLongBit;
             }
 
-            int cont = 0;
             string _byte = string.Empty;
-            for (int x = 0; x < LongBit; x++)
+
+            while(_Text.Length > 0)
             {
-                cont++;
-                _byte = _byte + _Text.ElementAt(x);
-                if (cont == 8)
-                {
-                    ListaCompresion.Add(Convert.ToByte(_byte, 2));
-                    cont = 0;
-                    _byte = string.Empty;
-                }
+                _byte = _Text.Substring(0, 8);
+                _Text = _Text.Substring(8);
+
+                ListaCompresion.Add(Convert.ToByte(_byte, 2));
+                _byte = string.Empty;
             }
 
             return ListaCompresion;
@@ -395,7 +396,7 @@ namespace Compresion.Clases
             this.CompressFactor = Math.Round(this.CompressFactor, 2);
         }
 
-
+        // //////////////////////////////////////////DESCOMPRIMIR//////////////////////////////////////////
 
         public List<byte> Descomprimir()
         {

@@ -12,8 +12,8 @@ namespace Serie_II
     {
         static void Main(string[] args)
         {
-            Huffman Compresion = new Huffman(@"C:\Users\IT\Documents\EG\Cadena.txt", @"C:\Users\IT\Documents\EG\Cadena.huff");
-            //Compresion.CrearArchivoCompresion();
+            Huffman Compresion = new Huffman(new FileInfo(@"C:\Users\IT\Documents\EG\Cadena.txt"), new FileInfo(@"C:\Users\IT\Documents\EG\Cadena.huff"));
+            Compresion.Comprimir();
             //Compresion.CrearArchivoDescompresion();
             Console.ReadLine();
         }
