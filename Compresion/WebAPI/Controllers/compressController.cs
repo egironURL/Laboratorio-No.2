@@ -63,29 +63,31 @@ namespace WebAPI.Controllers
         {
             List<Compresion.Clases.Compresion> compresions = new List<Compresion.Clases.Compresion>();
             var CurrentDirectory = Directory.GetCurrentDirectory();
+            string pathfileDirectory = CurrentDirectory + "\\App_Data";
             string pathfileCompressions = CurrentDirectory + "\\App_Data\\fileCompressions.json";
 
+            if (!System.IO.Directory.Exists(pathfileDirectory))
+            {
+                DirectoryInfo di = Directory.CreateDirectory(pathfileDirectory);
+            }
             if (!System.IO.File.Exists(pathfileCompressions))
             {
                 System.IO.File.Create(pathfileCompressions);
             }
-            else
+            StreamReader r = new StreamReader(pathfileCompressions);
+            string jsonString = r.ReadToEnd();
+            if (jsonString != string.Empty)
             {
-                StreamReader r = new StreamReader(pathfileCompressions);
-                string jsonString = r.ReadToEnd();
-                if (jsonString != string.Empty)
-                {
-                    compresions = JsonConvert.DeserializeObject<List<Compresion.Clases.Compresion>>(jsonString);
-                }
-                r.Close();
-
-                compresions.Add(_dataCompress);
-                StreamWriter sw = new StreamWriter(pathfileCompressions);
-
-                string compressJsonFile = JsonConvert.SerializeObject(compresions, Formatting.Indented);
-                sw.WriteLine(compressJsonFile);
-                sw.Close();
+                compresions = JsonConvert.DeserializeObject<List<Compresion.Clases.Compresion>>(jsonString);
             }
+            r.Close();
+
+            compresions.Add(_dataCompress);
+            StreamWriter sw = new StreamWriter(pathfileCompressions);
+
+            string compressJsonFile = JsonConvert.SerializeObject(compresions, Formatting.Indented);
+            sw.WriteLine(compressJsonFile);
+            sw.Close();
         }
     }
 }
