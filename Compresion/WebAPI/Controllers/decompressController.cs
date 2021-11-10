@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Compresion;
+using Newtonsoft.Json;
 
 namespace WebAPI.Controllers
 {
@@ -13,11 +14,10 @@ namespace WebAPI.Controllers
     public class decompressController : ControllerBase
     {
         // POST  /api/decompress
-        [HttpPost("{name}")]
-        public async Task<FileResult> Download(string name)
+        [HttpPost]
+        public async Task<FileResult> Download()
         {
             var files = Request.Form.Files;
-            var fileName = name + ".txt";
             FileInfo fileInfoDecompress = null;
 
             if (files.Count == 1)
@@ -40,13 +40,42 @@ namespace WebAPI.Controllers
                         Compresion.Clases.Huffman compresion = new Compresion.Clases.Huffman(null, fileInfoDecompress);
                         List<byte> ArrayDecompressFile = compresion.Descomprimir();
                         var ArrayBytesDecompress = ArrayDecompressFile.ToArray();
+                        string fileName = BuscarNombreOriginal(files[0].FileName);
 
                         return File(ArrayBytesDecompress, "application/octet-stream", fileName);
                     }
                 }
             }
-
             return null;
+        }
+
+
+        // //////////////////////////////////////////COMPRESIONES//////////////////////////////////////////
+        public string BuscarNombreOriginal(string _fileNameCompress)
+        {
+            List<Compresion.Clases.Compresion> compresions = new List<Compresion.Clases.Compresion>();
+            var CurrentDirectory = Directory.GetCurrentDirectory();
+            string pathfileCompressions = CurrentDirectory + "\\App_Data\\fileCompressions.json";
+
+            StreamReader r = new StreamReader(pathfileCompressions);
+            string jsonString = r.ReadToEnd();
+            r.Close();
+
+            if (jsonString != string.Empty)
+            {
+                compresions = JsonConvert.DeserializeObject<List<Compresion.Clases.Compresion>>(jsonString);
+                for (int x = 0; x < compresions.Count; x++)
+                {
+                    if (compresions.ElementAt(x).PathFileHUFF == _fileNameCompress)
+                    {
+                        string fileName = compresions.ElementAt(x).FileName;
+                        return fileName;
+                    }
+                }
+            }
+
+            string Name = _fileNameCompress.Replace(".lzw", ".txt");
+            return Name;
         }
     }
 }
